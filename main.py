@@ -8,8 +8,8 @@ from flask_ckeditor import CKEditor, CKEditorField
 from datetime import date
 
 '''
-Make sure the required packages are installed: 
-Open the Terminal in PyCharm (bottom left). 
+Make sure the required packages are installed:
+Open the Terminal in PyCharm (bottom left).
 
 On Windows type:
 python -m pip install -r requirements.txt
@@ -48,7 +48,7 @@ with app.app_context():
 @app.route('/')
 def get_all_posts():
     # TODO: Query the database for all the posts. Convert the data to a python list.
-    posts = []
+    posts = db.session.execute(db.select(BlogPost)).scalars().all()
     return render_template("index.html", all_posts=posts)
 
 # TODO: Add a route so that you can click on individual posts.
@@ -77,4 +77,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5003)
+    app.run(debug=True, port=9000)
