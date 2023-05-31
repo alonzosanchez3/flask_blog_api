@@ -23,6 +23,7 @@ This will install the packages from the requirements.txt for this project.
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap5(app)
+ckeditor = CKEditor(app)
 
 # CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
@@ -44,6 +45,14 @@ class BlogPost(db.Model):
 with app.app_context():
     db.create_all()
 
+class BlogForm(FlaskForm):
+    title = StringField('Blog Post Title', validators=[DataRequired()])
+    subtitle = StringField('Subtitle', validators=[DataRequired()])
+    author = StringField('Your Name', validators=[DataRequired()])
+    img_url = StringField('Blog Image URL', validators=[DataRequired(), URL()])
+    body = CKEditorField('Blog Content', validators=[DataRequired()])
+    submit = SubmitField('Submit Post')
+
 
 @app.route('/')
 def get_all_posts():
@@ -60,6 +69,10 @@ def show_post(post_id):
 
 
 # TODO: add_new_post() to create a new blog post
+@app.route('/new_post', methods=['POST', "GET"])
+def new_post():
+    blog_form = BlogForm()
+    return render_template('make-post.html', form=blog_form)
 
 # TODO: edit_post() to change an existing blog post
 
