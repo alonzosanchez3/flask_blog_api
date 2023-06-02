@@ -72,6 +72,18 @@ def show_post(post_id):
 @app.route('/new_post', methods=['POST', "GET"])
 def new_post():
     blog_form = BlogForm()
+    if(blog_form.validate_on_submit()):
+        new_blog = BlogPost(
+            title = blog_form.title.data,
+            subtitle = blog_form.subtitle.data,
+            author = blog_form.author.data,
+            img_url = blog_form.img_url.data,
+            body = blog_form.body.data,
+            date = date.today().strftime("%B %d, $Y")
+        )
+        db.session.add(new_blog)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
     return render_template('make-post.html', form=blog_form)
 
 # TODO: edit_post() to change an existing blog post
