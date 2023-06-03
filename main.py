@@ -84,9 +84,21 @@ def new_post():
         db.session.add(new_blog)
         db.session.commit()
         return redirect(url_for('get_all_posts'))
-    return render_template('make-post.html', form=blog_form)
+    return render_template('make-post.html', form=blog_form, is_edit=False)
 
 # TODO: edit_post() to change an existing blog post
+@app.route('/edit_post/<int:post_id>', methods=["PATCH", "GET"])
+def edit_post(post_id):
+    print(post_id)
+    post = db.get_or_404(BlogPost, post_id)
+    edit_form = BlogForm(
+        title = post.title,
+        subtitle = post.subtitle,
+        img_url = post.img_url,
+        author = post.author,
+        body = post.body
+    )
+    return render_template('make-post.html', form=edit_form, is_edit=True)
 
 # TODO: delete_post() to remove a blog post from the database
 
