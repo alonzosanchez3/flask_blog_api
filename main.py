@@ -89,7 +89,6 @@ def new_post():
 # TODO: edit_post() to change an existing blog post
 @app.route('/edit_post/<int:post_id>', methods=["PATCH", "GET"])
 def edit_post(post_id):
-    print(post_id)
     post = db.get_or_404(BlogPost, post_id)
     edit_form = BlogForm(
         title = post.title,
